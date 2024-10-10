@@ -1,6 +1,6 @@
 <?php
 session_start();
-include("conexao.php"); // Conexão com o banco de dados
+include("../conexao.php"); // Conexão com o banco de dados
 
 // Verifica se o usuário está logado
 if (!isset($_SESSION['id'])) {

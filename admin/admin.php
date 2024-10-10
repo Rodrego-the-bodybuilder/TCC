@@ -1,6 +1,6 @@
 <?php
 session_start();
-include("conexao.php"); // Conexão com o banco de dados
+include("../conexao.php"); // Conexão com o banco de dados
 
 // Verifica se o usuário é admin
 if (!isset($_SESSION['admin']) || $_SESSION['admin'] !== true) {
@@ -10,27 +10,44 @@ if (!isset($_SESSION['admin']) || $_SESSION['admin'] !== true) {
 
 // Adiciona o produto ao banco de dados
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nome = $_POST['nome'];
-    $descricao = $_POST['descricao'];
-    $preco = $_POST['preco'];
-
-    // Lida com o upload da imagem
-    if (isset($_FILES['imagem']) && $_FILES['imagem']['error'] == 0) {
-        $imagemNome = $_FILES['imagem']['name'];
-        $imagemTmp = $_FILES['imagem']['tmp_name'];
-        $imagemDestino = 'uploads/' . $imagemNome;
-
-        // Move o arquivo enviado para a pasta de uploads
-        if (move_uploaded_file($imagemTmp, $imagemDestino)) {
-            // Inserir o produto com imagem no banco de dados
-            $query = "INSERT INTO produtos (nome, descricao, preco, imagem) VALUES ('$nome', '$descricao', '$preco', '$imagemDestino')";
-            $conexao->query($query);
-            echo "Produto adicionado com sucesso!";
-        } else {
-            echo "Falha ao fazer upload da imagem.";
-        }
+    $nome = $conexao->real_escape_string(trim($_POST['nome']));
+    $descricao = $conexao->real_escape_string(trim($_POST['descricao']));
+    $preco = $conexao->real_escape_string(trim($_POST['preco']));
+    
+    // Validação básica
+    if (empty($nome) || empty($descricao) || empty($preco)) {
+        echo "<script>alert('Por favor, preencha todos os campos.');</script>";
     } else {
-        echo "Nenhuma imagem foi enviada.";
+        // Lida com o upload da imagem
+        if (isset($_FILES['imagem']) && $_FILES['imagem']['error'] == 0) {
+            $imagemNome = $_FILES['imagem']['name'];
+            $imagemTmp = $_FILES['imagem']['tmp_name'];
+            $imagemDestino = 'uploads/' . uniqid() . '-' . $imagemNome; // Adiciona um ID único para evitar conflitos
+
+            // Verifica se a pasta de uploads existe, caso contrário cria a pasta
+            if (!is_dir('uploads')) {
+                mkdir('uploads', 0777, true);
+            }
+
+            // Move o arquivo enviado para a pasta de uploads
+            if (move_uploaded_file($imagemTmp, $imagemDestino)) {
+                // Inserir o produto com imagem no banco de dados usando prepared statements
+                $stmt = $conexao->prepare("INSERT INTO produtos (nome, descricao, preco, imagem) VALUES (?, ?, ?, ?)");
+                $stmt->bind_param("ssds", $nome, $descricao, $preco, $imagemDestino);
+
+                if ($stmt->execute()) {
+                    echo "<script>alert('Produto adicionado com sucesso!');</script>";
+                } else {
+                    echo "<script>alert('Erro ao adicionar produto: " . $stmt->error . "');</script>";
+                }
+
+                $stmt->close();
+            } else {
+                echo "<script>alert('Falha ao fazer upload da imagem.');</script>";
+            }
+        } else {
+            echo "<script>alert('Nenhuma imagem foi enviada ou houve um erro no upload.');</script>";
+        }
     }
 }
 ?>

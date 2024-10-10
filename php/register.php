@@ -1,6 +1,6 @@
 <?php
 session_start();
-include("conexao.php"); // Inclui a conexão com o banco de dados
+include("../conexao.php"); // Inclui a conexão com o banco de dados
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nome = $conexao->real_escape_string($_POST['nome']);

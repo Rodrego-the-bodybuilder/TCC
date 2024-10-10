@@ -2,37 +2,43 @@
 session_start();
 include("../conexao.php");
 
-if (isset($_POST['email']) && isset($_POST['senha'])) {
-    $email = $conexao->real_escape_string($_POST['email']);
-    $senha = $conexao->real_escape_string($_POST['senha']);
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $email = $_POST['email'];
+    $senha = $_POST['senha'];
 
-    // Verifica se o email e senha existem no banco
-    $sql = "SELECT * FROM usuarios WHERE email = '$email'";
-    $result = $conexao->query($sql);
+    // Verifica o usuário no banco de dados
+    $stmt = $conexao->prepare("SELECT id, nome, senha, is_admin FROM usuarios WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
 
-    if ($result->num_rows == 1) {
-        $usuario = $result->fetch_assoc();
+    if ($resultado->num_rows > 0) {
+        $usuario = $resultado->fetch_assoc();
 
-        // Verifica se a senha corresponde
+        // Verifica a senha
         if (password_verify($senha, $usuario['senha'])) {
-            $_SESSION['id'] = $usuario['id'];
+            $_SESSION['user_id'] = $usuario['id'];
             $_SESSION['nome'] = $usuario['nome'];
 
             // Verifica se o usuário é admin
-            $_SESSION['admin'] = ($usuario['email'] == "albuquerque.rodrigo2007@gmail.com");
-            $_SESSION['admin'] = ($usuario['senha'] == "Arte@1");
-
-            // Redireciona para a página inicial
-            header("Location: index.php");
-            exit();
+            if ($usuario['is_admin'] == 1) {
+                $_SESSION['admin'] = true;
+                header("Location: admin.php");
+                exit;
+            } else {
+                $_SESSION['admin'] = false;
+                header("Location: user_dashboard.php");
+                exit;
+            }
         } else {
-            $error_message = "Senha incorreta.";
+            echo "<script>alert('Senha incorreta!');</script>";
         }
     } else {
-        $error_message = "Email ou senha incorretos.";
+        echo "<script>alert('Usuário não encontrado!');</script>";
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -42,6 +48,8 @@ if (isset($_POST['email']) && isset($_POST['senha'])) {
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <title>Login</title>
 </head>
+
+
 <body class="bg-gray-100">
     <div class="container mx-auto mt-10 max-w-md">
         <h1 class="text-2xl font-bold text-center mb-6">Login</h1>
