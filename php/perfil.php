@@ -1,17 +1,20 @@
 <?php
 session_start();
-include("conexao.php");
+include("../conexao.php");
 
 // Verifica se o usuário está logado
-if (!isset($_SESSION['id'])) {
+if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
 }
 
 // Obtém as informações do usuário logado
-$user_id = $_SESSION['id'];
-$sql = "SELECT * FROM usuarios WHERE id = '$user_id'";
-$result = $conexao->query($sql);
+$user_id = $_SESSION['user_id'];
+$sql = "SELECT * FROM usuarios WHERE id = ?";
+$stmt = $conexao->prepare($sql);
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
 $usuario = $result->fetch_assoc();
 ?>
 
@@ -27,9 +30,9 @@ $usuario = $result->fetch_assoc();
     <div class="container mx-auto mt-10 max-w-md">
         <h1 class="text-2xl font-bold text-center mb-6">Perfil do Usuário</h1>
         <div class="bg-white p-6 rounded-lg shadow">
-            <h2 class="text-lg font-semibold">Nome: <?php echo $usuario['nome']; ?></h2>
-            <p>Email: <?php echo $usuario['email']; ?></p>
-            <a class="mt-4 inline-block bg-blue-600 text-white p-2 rounded" href="logout.php">Sair</a>
+            <h2 class="text-lg font-semibold">Nome: <?php echo htmlspecialchars($usuario['nome']); ?></h2>
+            <p>Email: <?php echo htmlspecialchars($usuario['email']); ?></p>
+            <a class="mt-4 inline-block bg-yellow-600 text-white p-2 rounded" href="logout.php">Sair</a>
         </div>
     </div>
 </body>

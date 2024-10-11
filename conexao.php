@@ -33,7 +33,7 @@ $conexao->query("
         nome VARCHAR(100) NOT NULL,
         descricao TEXT NOT NULL,
         preco DECIMAL(10, 2) NOT NULL,
-        imagem VARCHAR(255) DEFAULT NULL
+        imagem MEDIUMBLOB
     )
 ");
 
@@ -45,9 +45,13 @@ $senha = password_hash("Arte@1", PASSWORD_DEFAULT);
 // Verifica se o email já existe
 $result = $conexao->query("SELECT * FROM usuarios WHERE email = '$email'");
 
-if ($conexao->query("INSERT INTO usuarios (nome, email, senha, is_admin) VALUES ('$nome', '$email', '$senha', 1)") === TRUE) {
-    echo "Admin cadastrado com sucesso!";
-} else {
-    die("Erro ao cadastrar admin: " . $conexao->error);
-}
+if ($result->num_rows == 0) {
+    // Se o email não existe, insira o novo admin
+    if ($conexao->query("INSERT ignore INTO usuarios (nome, email, senha, is_admin) VALUES ('$nome', '$email', '$senha', 1)") === TRUE) {
+        echo "Admin cadastrado com sucesso!";
+    } else {
+        die("Erro ao cadastrar admin: " . $conexao->error);
+    }
+} 
+
 ?>

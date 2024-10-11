@@ -20,31 +20,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         // Lida com o upload da imagem
         if (isset($_FILES['imagem']) && $_FILES['imagem']['error'] == 0) {
-            $imagemNome = $_FILES['imagem']['name'];
-            $imagemTmp = $_FILES['imagem']['tmp_name'];
-            $imagemDestino = 'uploads/' . uniqid() . '-' . $imagemNome; // Adiciona um ID único para evitar conflitos
+            // Lê o arquivo da imagem como uma string
+            $imagem = file_get_contents($_FILES['imagem']['tmp_name']);
+            $imagem = $conexao->real_escape_string($imagem); // Escapa para evitar problemas de SQL
 
-            // Verifica se a pasta de uploads existe, caso contrário cria a pasta
-            if (!is_dir('uploads')) {
-                mkdir('uploads', 0777, true);
-            }
+            // Inserir o produto com imagem no banco de dados usando prepared statements
+            $stmt = $conexao->prepare("INSERT INTO produtos (nome, descricao, preco, imagem) VALUES (?, ?, ?, ?)");
+            $stmt->bind_param("ssds", $nome, $descricao, $preco, $imagem);
 
-            // Move o arquivo enviado para a pasta de uploads
-            if (move_uploaded_file($imagemTmp, $imagemDestino)) {
-                // Inserir o produto com imagem no banco de dados usando prepared statements
-                $stmt = $conexao->prepare("INSERT INTO produtos (nome, descricao, preco, imagem) VALUES (?, ?, ?, ?)");
-                $stmt->bind_param("ssds", $nome, $descricao, $preco, $imagemDestino);
-
-                if ($stmt->execute()) {
-                    echo "<script>alert('Produto adicionado com sucesso!');</script>";
-                } else {
-                    echo "<script>alert('Erro ao adicionar produto: " . $stmt->error . "');</script>";
-                }
-
-                $stmt->close();
+            if ($stmt->execute()) {
+                echo "<script>alert('Produto adicionado com sucesso!');</script>";
             } else {
-                echo "<script>alert('Falha ao fazer upload da imagem.');</script>";
+                echo "<script>alert('Erro ao adicionar produto: " . $stmt->error . "');</script>";
             }
+
+            $stmt->close();
         } else {
             echo "<script>alert('Nenhuma imagem foi enviada ou houve um erro no upload.');</script>";
         }
@@ -78,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <div class="mb-4">
                 <label for="imagem" class="block text-sm font-medium text-gray-700">Imagem do Produto</label>
-                <input type="file" name="imagem" id="imagem" class="mt-1">
+                <input type="file" name="imagem" id="imagem" class="mt-1" required>
             </div>
             <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Adicionar Produto</button>
         </form>
