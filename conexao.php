@@ -16,42 +16,122 @@ $conexao->query("CREATE DATABASE IF NOT EXISTS bancolojarodrigo");
 $conexao->select_db("bancolojarodrigo");
 
 // Criando a tabela de usuários com a coluna is_admin
-$conexao->query("
+if (!$conexao->query("
     CREATE TABLE IF NOT EXISTS usuarios (
         id INT PRIMARY KEY AUTO_INCREMENT,
         nome VARCHAR(100) NOT NULL,
         email VARCHAR(100) NOT NULL UNIQUE,
         senha VARCHAR(255) NOT NULL,
-        is_admin TINYINT(1) DEFAULT 0 -- Coluna para definir se o usuário é admin (0 = não, 1 = sim)
+        is_admin TINYINT(1) DEFAULT 0
     )
-");
+")) {
+    echo "Erro ao criar tabela 'usuarios': " . $conexao->error;
+}
 
 // Criando a tabela de produtos
-$conexao->query("
+if (!$conexao->query("
     CREATE TABLE IF NOT EXISTS produtos (
         id INT PRIMARY KEY AUTO_INCREMENT,
         nome VARCHAR(100) NOT NULL,
         descricao TEXT NOT NULL,
         preco DECIMAL(10, 2) NOT NULL,
-        imagem MEDIUMBLOB
+        imagem MEDIUMBLOB DEFAULT NULL
     )
-");
+")) {
+    echo "Erro ao criar tabela 'produtos': " . $conexao->error;
+}
 
-// Criando um admin padrão, se ele ainda não existir
-$nome = "Rodrigo";
-$email = "albuquerque.rodrigo2007@gmail.com";
-$senha = password_hash("Arte@1", PASSWORD_DEFAULT);
+// Criando a tabela de pedidos
+if (!$conexao->query("
+    CREATE TABLE IF NOT EXISTS pedidos (
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        usuario_id INT NOT NULL,
+        data_pedido DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        status VARCHAR(50) NOT NULL DEFAULT 'Pendente',
+        total DECIMAL(10, 2) NOT NULL,
+        FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+    )
+")) {
+    echo "Erro ao criar tabela 'pedidos': " . $conexao->error;
+}
 
-// Verifica se o email já existe
-$result = $conexao->query("SELECT * FROM usuarios WHERE email = '$email'");
+// Criando a tabela de itens do pedido
+if (!$conexao->query("
+    CREATE TABLE IF NOT EXISTS itens_pedido (
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        pedido_id INT NOT NULL,
+        produto_id INT NOT NULL,
+        quantidade INT NOT NULL,
+        preco_unitario DECIMAL(10, 2) NOT NULL,
+        FOREIGN KEY (pedido_id) REFERENCES pedidos(id),
+        FOREIGN KEY (produto_id) REFERENCES produtos(id)
+    )
+")) {
+    echo "Erro ao criar tabela 'itens_pedido': " . $conexao->error;
+}
 
-if ($result->num_rows == 0) {
-    // Se o email não existe, insira o novo admin
-    if ($conexao->query("INSERT ignore INTO usuarios (nome, email, senha, is_admin) VALUES ('$nome', '$email', '$senha', 1)") === TRUE) {
-        echo "Admin cadastrado com sucesso!";
-    } else {
-        die("Erro ao cadastrar admin: " . $conexao->error);
-    }
-} 
+// Criando a tabela de pagamentos (substituindo a tabela de categorias)
+if (!$conexao->query("
+    CREATE TABLE IF NOT EXISTS pagamentos (
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        pedido_id INT NOT NULL,
+        valor DECIMAL(10, 2) NOT NULL,
+        metodo_pagamento VARCHAR(50) NOT NULL,
+        data_pagamento DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        status_pagamento VARCHAR(50) NOT NULL,
+        FOREIGN KEY (pedido_id) REFERENCES pedidos(id)
+    )
+")) {
+    echo "Erro ao criar tabela 'pagamentos': " . $conexao->error;
+}
 
+// Criando a tabela de endereços de entrega
+if (!$conexao->query("
+    CREATE TABLE IF NOT EXISTS enderecos_entrega (
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        usuario_id INT NOT NULL,
+        rua VARCHAR(255) NOT NULL,
+        numero VARCHAR(10) NOT NULL,
+        complemento VARCHAR(255),
+        cidade VARCHAR(100) NOT NULL,
+        estado VARCHAR(100) NOT NULL,
+        cep VARCHAR(20) NOT NULL,
+        FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+    )
+")) {
+    echo "Erro ao criar tabela 'enderecos_entrega': " . $conexao->error;
+}
+
+// Criando a tabela de carrinho
+if (!$conexao->query("
+    CREATE TABLE IF NOT EXISTS carrinho (
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        usuario_id INT NOT NULL,
+        produto_id INT NOT NULL,
+        quantidade INT NOT NULL,
+        FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
+        FOREIGN KEY (produto_id) REFERENCES produtos(id)
+    )
+")) {
+    echo "Erro ao criar tabela 'carrinho': " . $conexao->error;
+}
+
+// Criando a tabela de avaliações
+if (!$conexao->query("
+    CREATE TABLE IF NOT EXISTS avaliacoes (
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        produto_id INT NOT NULL,
+        usuario_id INT NOT NULL,
+        nota INT NOT NULL CHECK (nota >= 1 AND nota <= 5),
+        comentario TEXT,
+        data_avaliacao DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (produto_id) REFERENCES produtos(id),
+        FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+    )
+")) {
+    echo "Erro ao criar tabela 'avaliacoes': " . $conexao->error;
+}
+
+// Fechando a conexão
+$conexao->close();
 ?>
