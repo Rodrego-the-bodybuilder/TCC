@@ -17,7 +17,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Insere o novo usuário no banco de dados
         $query = "INSERT INTO usuarios (nome, email, senha) VALUES ('$nome', '$email', '$senha')";
         if ($conexao->query($query)) {
-            // Registro bem-sucedido, redireciona para login
             header("Location: login.php");
             exit();
         } else {

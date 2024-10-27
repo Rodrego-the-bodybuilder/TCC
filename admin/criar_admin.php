@@ -1,24 +1,34 @@
 <?php
 include("conexao.php");
 
-// Dados do admin
+$conexao = new mysqli("localhost", "root", "", "bancolojarodrigo");
+
+if ($conexao->connect_error) {
+    die("Erro de conexão: " . $conexao->connect_error);
+}
+
 $nome = "Rodrigo";
 $email = "albuquerque.rodrigo2007@gmail.com";
-$senha = password_hash("Arte@1", PASSWORD_DEFAULT);  
+$senha = password_hash("Arte@1", PASSWORD_DEFAULT);
 
-// Verifica se o email já existe
-$result = $conexao->query("SELECT * FROM usuarios WHERE email = '$email'");
+$stmt = $conexao->prepare("SELECT * FROM usuarios WHERE email = ?");
+$stmt->bind_param("s", $email);
+$stmt->execute();
+$result = $stmt->get_result();
 
 if ($result->num_rows > 0) {
-    echo "<script>alert('Erro!! email já cadastrado!');</script>";
+    echo "<script>alert('Erro! Email já cadastrado!');</script>";
 } else {
-    // Insere o usuário se o email não existir
-    $sql = "INSERT INTO usuarios (nome, email, senha) VALUES ('$nome', '$email', '$senha')";
-    
-    if ($conexao->query($sql) === TRUE) {
+    $stmt = $conexao->prepare("INSERT INTO usuarios (nome, email, senha, is_admin) VALUES (?, ?, ?, 1)");
+    $stmt->bind_param("sss", $nome, $email, $senha);
+
+    if ($stmt->execute()) {
         echo "<script>alert('Admin cadastrado com sucesso!');</script>";
     } else {
         echo "Erro ao adicionar admin: " . $conexao->error;
     }
 }
+
+$stmt->close();
+$conexao->close();
 ?>

@@ -70,7 +70,7 @@ if (!$conexao->query("
     echo "Erro ao criar tabela 'itens_pedido': " . $conexao->error;
 }
 
-// Criando a tabela de pagamentos (substituindo a tabela de categorias)
+// Criando a tabela de pagamentos
 if (!$conexao->query("
     CREATE TABLE IF NOT EXISTS pagamentos (
         id INT PRIMARY KEY AUTO_INCREMENT,
