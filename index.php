@@ -31,7 +31,7 @@ $isAdmin = isset($_SESSION['admin']) && $_SESSION['admin'] === true;
                 <li><a href="#contact" class="hover:text-gray-300">Contato</a></li>
                 <?php if (isset($_SESSION['nome'])): ?>
                     <li><a href="php/perfil.php" class="hover:text-gray-300">Meu Perfil</a></li>
-                    <li><a href="php/logout.php" class="hover:text-gray-300">Sair</a></li>
+                    
                     <li><a href="php/carrinho.php" class="hover:text-gray-300">Carrinho</a></li>
                     <?php if ($isAdmin): ?>
                         <li><a href="admin/admin.php" class="hover:text-gray-300">Admin</a></li>

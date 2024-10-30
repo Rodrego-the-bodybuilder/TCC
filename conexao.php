@@ -133,5 +133,5 @@ if (!$conexao->query("
 }
 
 // Fechando a conexão
-$conexao->close();
+
 ?>

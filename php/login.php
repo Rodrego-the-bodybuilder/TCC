@@ -1,39 +1,53 @@
 <?php
 session_start();
-include("../conexao.php");
+include("../conexao.php"); // Certifique-se de que o caminho está correto
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $email = $_POST['email'];
+    // Escapando entradas do usuário
+    $email = $conexao->real_escape_string($_POST['email']);
     $senha = $_POST['senha'];
 
+    // Verifica se a conexão foi estabelecida corretamente
+    if ($conexao->connect_error) {
+        die("Erro de conexão: " . $conexao->connect_error);
+    }
+
+    // Prepara a consulta para o banco de dados
     $stmt = $conexao->prepare("SELECT id, nome, senha, is_admin FROM usuarios WHERE email = ?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $resultado = $stmt->get_result();
+    
+    if ($stmt) {
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
 
-    if ($resultado->num_rows > 0) {
-        $usuario = $resultado->fetch_assoc();
+        if ($resultado->num_rows > 0) {
+            $usuario = $resultado->fetch_assoc();
 
-        if (password_verify($senha, $usuario['senha'])) {
-            $_SESSION['user_id'] = $usuario['id'];
-            $_SESSION['nome'] = $usuario['nome'];
+            // Verifica a senha
+            if (password_verify($senha, $usuario['senha'])) {
+                $_SESSION['user_id'] = $usuario['id'];
+                $_SESSION['nome'] = $usuario['nome'];
 
-            if ($usuario['is_admin'] == 1) {
-                $_SESSION['admin'] = true;
-                header("Location: ../admin/admin.php");
-                exit;
+                // Verifica se o usuário é administrador
+                if ($usuario['is_admin'] == 1) {
+                    $_SESSION['admin'] = true;
+                    header("Location: ../admin/admin.php");
+                    exit;
+                } else {
+                    $_SESSION['admin'] = false;
+                    header("Location: ../index.php");
+                    exit;
+                }
             } else {
-                $_SESSION['admin'] = false;
-                header("Location: home.php");
-                exit;
+                $erro = "Senha incorreta.";
             }
         } else {
-            $erro = "Senha incorreta.";
+            $erro = "Usuário não encontrado.";
         }
+        $stmt->close();
     } else {
-        $erro = "Usuário não encontrado.";
+        $erro = "Erro na consulta ao banco de dados: " . $conexao->error;
     }
-    $stmt->close();
 }
 ?>
 
