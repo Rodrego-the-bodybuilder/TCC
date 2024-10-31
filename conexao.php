@@ -131,7 +131,4 @@ if (!$conexao->query("
 ")) {
     echo "Erro ao criar tabela 'avaliacoes': " . $conexao->error;
 }
-
-// Fechando a conexão
-
 ?>

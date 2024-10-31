@@ -1,5 +1,6 @@
 <?php
-include("conexao.php");
+session_start();
+include("../conexao.php");
 
 // ... (sua conexão com o banco de dados)
 
