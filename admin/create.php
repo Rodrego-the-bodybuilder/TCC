@@ -52,25 +52,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body class="bg-gray-100">
     <div class="container mx-auto p-6">
-        <h2 class="text-3xl font-bold mb-4">Adicionar Novo Produto</h2>
-        <form action="admin.php" method="POST" enctype="multipart/form-data" class="bg-white p-6 rounded-lg shadow">
+        <h2 class="text-4xl font-bold text-gray-700 mb-6">Adicionar Novo Produto</h2>
+        <form action="create.php" method="POST" enctype="multipart/form-data" class="bg-white p-8 rounded-lg shadow-md max-w-lg mx-auto">
             <div class="mb-4">
                 <label for="nome" class="block text-sm font-medium text-gray-700">Nome do Produto</label>
-                <input type="text" name="nome" id="nome" required class="mt-1 p-2 w-full border rounded">
+                <input type="text" name="nome" id="nome" required class="mt-1 p-2 w-full border rounded focus:ring-blue-500 focus:border-blue-500">
             </div>
             <div class="mb-4">
                 <label for="descricao" class="block text-sm font-medium text-gray-700">Descrição</label>
-                <textarea name="descricao" id="descricao" rows="4" required class="mt-1 p-2 w-full border rounded"></textarea>
+                <textarea name="descricao" id="descricao" rows="4" required class="mt-1 p-2 w-full border rounded focus:ring-blue-500 focus:border-blue-500"></textarea>
             </div>
             <div class="mb-4">
                 <label for="preco" class="block text-sm font-medium text-gray-700">Preço</label>
-                <input type="text" name="preco" id="preco" required class="mt-1 p-2 w-full border rounded">
+                <input type="text" name="preco" id="preco" required class="mt-1 p-2 w-full border rounded focus:ring-blue-500 focus:border-blue-500">
             </div>
             <div class="mb-4">
                 <label for="imagem" class="block text-sm font-medium text-gray-700">Imagem do Produto</label>
-                <input type="file" name="imagem" id="imagem" class="mt-1" required>
+                <input type="file" name="imagem" id="imagem" class="mt-1 p-2 w-full border rounded focus:ring-blue-500 focus:border-blue-500">
             </div>
-            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Adicionar Produto</button>
+            <button type="submit" class="w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500">Adicionar Produto</button>
         </form>
     </div>
 </body>

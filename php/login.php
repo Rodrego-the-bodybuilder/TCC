@@ -1,6 +1,6 @@
 <?php
 session_start();
-include("../conexao.php"); // Certifique-se de que o caminho está correto
+include("../conexao.php");
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Escapando entradas do usuário
@@ -25,13 +25,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             // Verifica a senha
             if (password_verify($senha, $usuario['senha'])) {
-                $_SESSION['user_id'] = $usuario['id'];
+                // Define o ID do usuário na sessão como usuario_id
+                $_SESSION['usuario_id'] = $usuario['id'];
                 $_SESSION['nome'] = $usuario['nome'];
 
                 // Verifica se o usuário é administrador
                 if ($usuario['is_admin'] == 1) {
                     $_SESSION['admin'] = true;
-                    header("Location: ../admin/admin.php");
+                    header("Location: ../index.php");
                     exit;
                 } else {
                     $_SESSION['admin'] = false;

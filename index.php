@@ -32,9 +32,9 @@ $isAdmin = isset($_SESSION['admin']) && $_SESSION['admin'] === true;
                 <?php if (isset($_SESSION['nome'])): ?>
                     <li><a href="php/perfil.php" class="hover:text-gray-300">Meu Perfil</a></li>
                     
-                    <li><a href="php/carrinho.php" class="hover:text-gray-300">Carrinho</a></li>
+                    <li><a href="php/carrinho/carrinho.php" class="hover:text-gray-300">Carrinho</a></li>
                     <?php if ($isAdmin): ?>
-                        <li><a href="admin/admin.php" class="hover:text-gray-300">Admin</a></li>
+                        <li><a href="admin/read.php" class="hover:text-gray-300">Admin</a></li>
                     <?php endif; ?>
                 <?php else: ?>
                     <li><a href="php/login.php" class="hover:text-gray-300">Login</a></li>
@@ -64,7 +64,7 @@ $isAdmin = isset($_SESSION['admin']) && $_SESSION['admin'] === true;
                     <img src='php/exibir_imagem.php?id=" . htmlspecialchars($produto['id']) . "' alt='" . htmlspecialchars($produto['nome']) . "' class='w-full h-48 object-cover rounded-t-lg'>
                     <h3 class='text-xl font-semibold mt-4'>" . htmlspecialchars($produto['nome']) . " - R$ " . htmlspecialchars($produto['preco']) . "</h3>
                     <p class='mt-2'>" . htmlspecialchars($produto['descricao']) . "</p>
-                    <form method='POST' action='adicionar_carrinho.php'>
+                    <form method='POST' action='php/carrinho/add_carrinho.php'>
                         <input type='hidden' name='produto_id' value='" . htmlspecialchars($produto['id']) . "'>
                         <button type='submit' class='bg-yellow-500 text-white px-4 py-2 mt-4 rounded'>Adicionar ao Carrinho</button>
                     </form>
