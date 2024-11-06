@@ -8,6 +8,8 @@ include("../conexao.php");
 $nome = "Admin";
 $email = "albuquerque.rodrigo2007@gmail.com";
 $senha = password_hash("Arte@1", PASSWORD_DEFAULT);
+$cpf = "123.456.789-00";
+$data_nascimento = "1990-01-01";
 
 // Preparar a consulta para verificar se o email já existe
 $stmt = $conexao->prepare("SELECT id FROM usuarios WHERE email = ?");
@@ -20,8 +22,8 @@ if ($result->num_rows === 0) {
     $stmt->close(); // Fechar a consulta anterior
 
     // Preparar a consulta de inserção
-    $stmt = $conexao->prepare("INSERT INTO usuarios (nome, email, senha, is_admin) VALUES (?, ?, ?, 1)");
-    $stmt->bind_param("sss", $nome, $email, $senha);
+    $stmt = $conexao->prepare("INSERT INTO usuarios (nome, email, senha, cpf, data_nascimento, is_admin) VALUES (?, ?, ?, ?, ?, 1)");
+    $stmt->bind_param("sssss", $nome, $email, $senha, $cpf, $data_nascimento);
 
     if ($stmt->execute()) {
         echo "Usuário administrador cadastrado com sucesso!";
@@ -34,6 +36,4 @@ if ($result->num_rows === 0) {
     echo "O email já está cadastrado.";
 }
 
-$stmt->close();
-$conexao->close(); // Fechar a conexão com o banco de dados
 ?>

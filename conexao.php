@@ -15,20 +15,23 @@ if ($conexao->connect_error) {
 $conexao->query("CREATE DATABASE IF NOT EXISTS bancolojarodrigo");
 $conexao->select_db("bancolojarodrigo");
 
-// Criando a tabela de usuários com a coluna is_admin
+
 if (!$conexao->query("
     CREATE TABLE IF NOT EXISTS usuarios (
         id INT PRIMARY KEY AUTO_INCREMENT,
         nome VARCHAR(100) NOT NULL,
         email VARCHAR(100) NOT NULL UNIQUE,
         senha VARCHAR(255) NOT NULL,
+        cpf VARCHAR(14) NOT NULL UNIQUE,
+        data_nascimento DATE NOT NULL,
         is_admin TINYINT(1) DEFAULT 0
     )
 ")) {
     echo "Erro ao criar tabela 'usuarios': " . $conexao->error;
 }
 
-// Criando a tabela de produtos
+
+
 if (!$conexao->query("
     CREATE TABLE IF NOT EXISTS produtos (
         id INT PRIMARY KEY AUTO_INCREMENT,
@@ -41,7 +44,7 @@ if (!$conexao->query("
     echo "Erro ao criar tabela 'produtos': " . $conexao->error;
 }
 
-// Criando a tabela de pedidos
+
 if (!$conexao->query("
     CREATE TABLE IF NOT EXISTS pedidos (
         id INT PRIMARY KEY AUTO_INCREMENT,
@@ -55,7 +58,7 @@ if (!$conexao->query("
     echo "Erro ao criar tabela 'pedidos': " . $conexao->error;
 }
 
-// Criando a tabela de itens do pedido
+
 if (!$conexao->query("
     CREATE TABLE IF NOT EXISTS itens_pedido (
         id INT PRIMARY KEY AUTO_INCREMENT,
@@ -70,7 +73,7 @@ if (!$conexao->query("
     echo "Erro ao criar tabela 'itens_pedido': " . $conexao->error;
 }
 
-// Criando a tabela de pagamentos
+
 if (!$conexao->query("
     CREATE TABLE IF NOT EXISTS pagamentos (
         id INT PRIMARY KEY AUTO_INCREMENT,
@@ -85,7 +88,7 @@ if (!$conexao->query("
     echo "Erro ao criar tabela 'pagamentos': " . $conexao->error;
 }
 
-// Criando a tabela de endereços de entrega
+
 if (!$conexao->query("
     CREATE TABLE IF NOT EXISTS enderecos_entrega (
         id INT PRIMARY KEY AUTO_INCREMENT,
@@ -102,7 +105,7 @@ if (!$conexao->query("
     echo "Erro ao criar tabela 'enderecos_entrega': " . $conexao->error;
 }
 
-// Criando a tabela de carrinho
+
 if (!$conexao->query("
     CREATE TABLE IF NOT EXISTS carrinho (
         id INT PRIMARY KEY AUTO_INCREMENT,
@@ -116,7 +119,7 @@ if (!$conexao->query("
     echo "Erro ao criar tabela 'carrinho': " . $conexao->error;
 }
 
-// Criando a tabela de avaliações
+
 if (!$conexao->query("
     CREATE TABLE IF NOT EXISTS avaliacoes (
         id INT PRIMARY KEY AUTO_INCREMENT,

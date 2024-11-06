@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Prepara a consulta para o banco de dados
     $stmt = $conexao->prepare("SELECT id, nome, senha, is_admin FROM usuarios WHERE email = ?");
-    
+
     if ($stmt) {
         $stmt->bind_param("s", $email);
         $stmt->execute();
@@ -54,13 +54,43 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <title>Login</title>
 </head>
+
 <body class="bg-gray-100">
+    <nav class="bg-yellow-500 p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-white text-2xl font-bold">Loja Biscuit</h1>
+            <button class="md:hidden text-white" id="menu-toggle">
+                <!-- Ícone do menu hamburguer -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+            <ul class="hidden md:flex space-x-4 text-white" id="menu">
+                <li><a href="../index.php" class="hover:text-gray-300">Produtos</a></li>
+                <li><a href="#about" class="hover:text-gray-300">Sobre Nós</a></li>
+                <li><a href="#contact" class="hover:text-gray-300">Contato</a></li>
+                <?php if (isset($_SESSION['nome'])): ?>
+                    <li><a href="php/perfil.php" class="hover:text-gray-300">Meu Perfil</a></li>
+
+                    <li><a href="php/carrinho/carrinho.php" class="hover:text-gray-300">Carrinho</a></li>
+                    <?php if ($isAdmin): ?>
+                        <li><a href="admin/read.php" class="hover:text-gray-300">Admin</a></li>
+                    <?php endif; ?>
+                <?php else: ?>
+                    <li><a href="php/login.php" class="hover:text-gray-300">Login</a></li>
+                <?php endif; ?>
+            </ul>
+        </div>
+    </nav>
+
     <div class="container mx-auto mt-10 max-w-md">
         <h1 class="text-2xl font-bold text-center mb-6">Login</h1>
 
@@ -70,7 +100,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         <form method="POST" action="login.php" class="bg-white p-6 rounded-lg shadow">
             <input type="email" name="email" placeholder="Email" class="block w-full p-2 border rounded mb-4" required>
-            <input type="password" name="senha" placeholder="Senha" class="block w-full p-2 border rounded mb-4" required>
+            <input type="password" name="senha" placeholder="Senha" class="block w-full p-2 border rounded mb-4"
+                required>
             <button type="submit" class="w-full bg-blue-600 text-white p-2 rounded">Login</button>
         </form>
 
@@ -79,4 +110,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </p>
     </div>
 </body>
+
 </html>
