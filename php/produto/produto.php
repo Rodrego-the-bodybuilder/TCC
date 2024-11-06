@@ -1,6 +1,6 @@
 <?php
 session_start();
-include("../../conexao.php"); // Conexão com o banco de dados
+include("../../conexao.php");
 
 // Verifica se o id do produto foi passado
 if (isset($_GET['id'])) {
@@ -13,24 +13,30 @@ if (isset($_GET['id'])) {
     $stmt->execute();
     $result = $stmt->get_result();
 
-    // Verifica se o produto foi encontrado
     if ($result->num_rows > 0) {
         $produto = $result->fetch_assoc();
     } else {
-        $produto = null; // Produto não encontrado
+        header("Location: index.php?error=ProdutoNãoEncontrado");
+        exit();
     }
 
-    // Query para buscar avaliações do produto
-    $query_avaliacoes = "SELECT * FROM avaliacoes WHERE produto_id = ?";
+    // Query para buscar avaliações do produto e os nomes dos usuários
+    $query_avaliacoes = "
+        SELECT avaliacoes.nota, avaliacoes.comentario, usuarios.nome AS usuario
+        FROM avaliacoes
+        JOIN usuarios ON avaliacoes.usuario_id = usuarios.id
+        WHERE avaliacoes.produto_id = ?";
     $stmt_avaliacoes = $conexao->prepare($query_avaliacoes);
     $stmt_avaliacoes->bind_param("i", $produto_id);
     $stmt_avaliacoes->execute();
     $result_avaliacoes = $stmt_avaliacoes->get_result();
 } else {
-    $produto = null; // id não fornecido
+    header("Location: index.php?error=IDProdutoNaoFornecido");
+    exit();
 }
 ?>
 
+<!-- Resto do código HTML e PHP para exibir o produto e as avaliações -->
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -46,14 +52,14 @@ if (isset($_GET['id'])) {
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-white text-2xl font-bold">Loja Biscuit</h1>
             <ul class="flex space-x-4 text-white">
-                <li><a href="index.php" class="hover:text-gray-300">Produtos</a></li>
+                <li><a href="../../index.php" class="hover:text-gray-300">Produtos</a></li>
                 <li><a href="#about" class="hover:text-gray-300">Sobre Nós</a></li>
                 <li><a href="#contact" class="hover:text-gray-300">Contato</a></li>
                 <?php if (isset($_SESSION['nome'])): ?>
-                    <li><a href="php/perfil.php" class="hover:text-gray-300">Meu Perfil</a></li>
-                    <li><a href="php/carrinho/carrinho.php" class="hover:text-gray-300">Carrinho</a></li>
+                    <li><a href="../perfil.php" class="hover:text-gray-300">Meu Perfil</a></li>
+                    <li><a href="../carrinho/carrinho.php" class="hover:text-gray-300">Carrinho</a></li>
                 <?php else: ?>
-                    <li><a href="php/login.php" class="hover:text-gray-300">Login</a></li>
+                    <li><a href="../login.php" class="hover:text-gray-300">Login</a></li>
                 <?php endif; ?>
             </ul>
         </div>
