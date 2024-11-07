@@ -82,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                     <li><a href="php/carrinho/carrinho.php" class="hover:text-gray-300">Carrinho</a></li>
                     <?php if ($isAdmin): ?>
-                        <li><a href="admin/read.php" class="hover:text-gray-300">Admin</a></li>
+                        <li><a href="../admin/read.php" class="hover:text-gray-300">Admin</a></li>
                     <?php endif; ?>
                 <?php else: ?>
                     <li><a href="php/login.php" class="hover:text-gray-300">Login</a></li>
@@ -102,7 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <input type="email" name="email" placeholder="Email" class="block w-full p-2 border rounded mb-4" required>
             <input type="password" name="senha" placeholder="Senha" class="block w-full p-2 border rounded mb-4"
                 required>
-            <button type="submit" class="w-full bg-blue-600 text-white p-2 rounded">Login</button>
+            <button type="submit" class="w-full bg-yellow-500 p-4 text-white p-2 rounded">Login</button>
         </form>
 
         <p class="mt-4 text-center">

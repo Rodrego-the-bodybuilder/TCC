@@ -51,10 +51,10 @@ $isAdmin = $usuario['is_admin'] == 1; // Ajuste para o nome do campo que indica 
                     <li><a href="php/perfil.php" class="hover:text-gray-300">Meu Perfil</a></li>
                     <li><a href="php/carrinho/carrinho.php" class="hover:text-gray-300">Carrinho</a></li>
                     <?php if ($isAdmin): ?>
-                        <li><a href="admin/read.php" class="hover:text-gray-300">Admin</a></li>
+                        <li><a href="../admin/read.php" class="hover:text-gray-300">Admin</a></li>
                     <?php endif; ?>
                 <?php else: ?>
-                    <li><a href="php/login.php" class="hover:text-gray-300">Login</a></li>
+                    <li><a href="login.php" class="hover:text-gray-300">Login</a></li>
                 <?php endif; ?>
             </ul>
         </div>
