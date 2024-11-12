@@ -66,10 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <nav class="bg-yellow-500 p-4">
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-white text-2xl font-bold">Loja Biscuit</h1>
-            <form action="index.php" method="GET" class="flex items-center space-x-2">
-                <input type="text" name="search" placeholder="Buscar produtos..." class="px-4 py-2 rounded-md">
-                <button type="submit" class="bg-white text-yellow-500 px-4 py-2 rounded-md">Buscar</button>
-            </form>
+            
             <!-- Menu de navegação -->
             <ul class="hidden md:flex space-x-4 text-white" id="menu">
                 <li><a href="index.php" class="hover:text-gray-300">Produtos</a></li>

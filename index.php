@@ -53,6 +53,7 @@ if (!$result) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <title>Loja do Artesão</title>
 </head>
@@ -64,7 +65,9 @@ if (!$result) {
             <h1 class="text-white text-2xl font-bold">Loja Biscuit</h1>
             <form action="index.php" method="GET" class="flex items-center space-x-2">
                 <input type="text" name="search" placeholder="Buscar produtos..." class="px-4 py-2 rounded-md">
-                <button type="submit" class="bg-white text-yellow-500 px-4 py-2 rounded-md">Buscar</button>
+                <button type="submit" class="bg-white text-yellow-500 px-4 py-2 rounded-md">
+                    <i class="fas fa-search"></i> <!-- Ícone de lupa -->
+                    </button>
             </form>
             <!-- Menu de navegação -->
             <ul class="hidden md:flex space-x-4 text-white" id="menu">
@@ -83,7 +86,7 @@ if (!$result) {
             </ul>
         </div>
     </nav>
-    
+
     <!-- Barra Lateral de Filtro -->
     <section class="container mx-auto p-6 flex">
         <div class="w-1/4 p-4 bg-white shadow-md rounded-lg mr-6">
@@ -107,12 +110,12 @@ if (!$result) {
 
         <!-- Produtos -->
         <!-- Produtos -->
-<div class="flex-1">
-    <h2 class="text-3xl font-bold mb-4">Produtos</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <?php
-        while ($produto = $result->fetch_assoc()) {
-            echo "
+        <div class="flex-1">
+            <h2 class="text-3xl font-bold mb-4">Produtos</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <?php
+                while ($produto = $result->fetch_assoc()) {
+                    echo "
             <div class='bg-white p-4 rounded-lg shadow'>
                 <a href='php/produto/produto.php?id=" . htmlspecialchars($produto['id']) . "' class='block'>
                     <img src='php/exibir_imagem.php?id=" . htmlspecialchars($produto['id']) . "' alt='" . htmlspecialchars($produto['nome']) . "' class='w-full h-64 object-cover rounded-t-lg'>
@@ -127,10 +130,10 @@ if (!$result) {
                     <button type='submit' class='bg-yellow-500 text-white px-4 py-2 mt-2 rounded'>Adicionar ao Carrinho</button>
                 </form>
             </div>";
-        }
-        ?>
-    </div>
-</div>
+                }
+                ?>
+            </div>
+        </div>
 
     </section>
     <!-- Footer -->

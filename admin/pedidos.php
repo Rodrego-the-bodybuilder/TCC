@@ -27,15 +27,23 @@ $resultado = $conexao->query("
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <title>Pedidos</title>
 </head>
 
 <body class="bg-gray-100">
-    
+
     <nav class="bg-yellow-500 p-4">
+
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-white text-2xl font-bold">Loja Biscuit</h1>
+            <form action="../index.php" method="GET" class="flex items-center space-x-2">
+                <input type="text" name="search" placeholder="Buscar produtos..." class="px-4 py-2 rounded-md">
+                <button type="submit" class="bg-white text-yellow-500 px-4 py-2 rounded-md">
+                    <i class="fas fa-search"></i> <!-- Ícone de lupa -->
+                </button>
+            </form>
             <ul class="hidden md:flex space-x-4 text-white">
                 <li><a href="../index.php" class="hover:text-gray-300">Produtos</a></li>
                 <li><a href="#about" class="hover:text-gray-300">Sobre Nós</a></li>
@@ -52,7 +60,7 @@ $resultado = $conexao->query("
             </ul>
         </div>
     </nav>
-    
+
     <div class="container mx-auto p-6">
         <h2 class="text-4xl font-bold text-gray-700 mb-6">Pedidos</h2>
 
@@ -76,9 +84,9 @@ $resultado = $conexao->query("
                             <td class="py-2 px-4"><?php echo htmlspecialchars($pedido['email']); ?></td>
                             <td class="py-2 px-4">R$ <?php echo number_format($pedido['total'], 2, ',', '.'); ?></td>
                             <td class="py-2 px-4">
-                                <?php echo htmlspecialchars($pedido['rua']) . ", " . htmlspecialchars($pedido['numero']) . " - " . 
-                                     htmlspecialchars($pedido['complemento']) . ", " . htmlspecialchars($pedido['cidade']) . " - " . 
-                                     htmlspecialchars($pedido['estado']) . ", CEP: " . htmlspecialchars($pedido['cep']); ?>
+                                <?php echo htmlspecialchars($pedido['rua']) . ", " . htmlspecialchars($pedido['numero']) . " - " .
+                                    htmlspecialchars($pedido['complemento']) . ", " . htmlspecialchars($pedido['cidade']) . " - " .
+                                    htmlspecialchars($pedido['estado']) . ", CEP: " . htmlspecialchars($pedido['cep']); ?>
                             </td>
                             <td class="py-2 px-4"><?php echo htmlspecialchars($pedido['status_pagamento']); ?></td>
                         </tr>
