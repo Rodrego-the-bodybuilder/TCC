@@ -33,28 +33,26 @@ $isAdmin = $usuario['is_admin'] == 1; // Ajuste para o nome do campo que indica 
 
 <body class="bg-gray-100">
 
-    <!-- Barra de Navegação -->
-    <nav class="bg-yellow-500 p-4">
+<nav class="bg-yellow-500 p-4">
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-white text-2xl font-bold">Loja Biscuit</h1>
-            <button class="md:hidden text-white" id="menu-toggle">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
-                </svg>
-            </button>
-            <ul class="hidden md:flex space-x-6 text-white" id="menu">
+            <form action="index.php" method="GET" class="flex items-center space-x-2">
+                <input type="text" name="search" placeholder="Buscar produtos..." class="px-4 py-2 rounded-md">
+                <button type="submit" class="bg-white text-yellow-500 px-4 py-2 rounded-md">Buscar</button>
+            </form>
+            <!-- Menu de navegação -->
+            <ul class="hidden md:flex space-x-4 text-white" id="menu">
                 <li><a href="../index.php" class="hover:text-gray-300">Produtos</a></li>
                 <li><a href="#about" class="hover:text-gray-300">Sobre Nós</a></li>
                 <li><a href="#contact" class="hover:text-gray-300">Contato</a></li>
                 <?php if (isset($_SESSION['nome'])): ?>
-                    <li><a href="php/perfil.php" class="hover:text-gray-300">Meu Perfil</a></li>
-                    <li><a href="php/carrinho/carrinho.php" class="hover:text-gray-300">Carrinho</a></li>
+                    <li><a href="perfil.php" class="hover:text-gray-300">Meu Perfil</a></li>
+                    <li><a href="carrinho/carrinho.php" class="hover:text-gray-300">Carrinho</a></li>
                     <?php if ($isAdmin): ?>
                         <li><a href="../admin/read.php" class="hover:text-gray-300">Admin</a></li>
                     <?php endif; ?>
                 <?php else: ?>
-                    <li><a href="login.php" class="hover:text-gray-300">Login</a></li>
+                    <li><a href="/login.php" class="hover:text-gray-300">Login</a></li>
                 <?php endif; ?>
             </ul>
         </div>
@@ -68,25 +66,25 @@ $isAdmin = $usuario['is_admin'] == 1; // Ajuste para o nome do campo que indica 
             <div class="space-y-4">
                 <div class="flex justify-between items-center">
                     <span class="font-semibold text-gray-600">Nome:</span>
-                    <span class="text-gray-800"><?php echo htmlspecialchars($usuario['nome']); ?></span>
+                    <span><?php echo htmlspecialchars($usuario['nome']); ?></span>
                 </div>
                 <div class="flex justify-between items-center">
                     <span class="font-semibold text-gray-600">Email:</span>
-                    <span class="text-gray-800"><?php echo htmlspecialchars($usuario['email']); ?></span>
+                    <span><?php echo htmlspecialchars($usuario['email']); ?></span>
                 </div>
                 <div class="flex justify-between items-center">
                     <span class="font-semibold text-gray-600">CPF:</span>
-                    <span class="text-gray-800"><?php echo htmlspecialchars($usuario['cpf']); ?></span>
+                    <span><?php echo htmlspecialchars($usuario['cpf']); ?></span>
                 </div>
                 <div class="flex justify-between items-center">
                     <span class="font-semibold text-gray-600">Data de Nascimento:</span>
-                    <span class="text-gray-800"><?php echo htmlspecialchars($usuario['data_nascimento']); ?></span>
+                    <span><?php echo htmlspecialchars($usuario['data_nascimento']); ?></span>
                 </div>
             </div>
 
             <!-- Botão de Logout -->
             <div class="flex justify-center mt-6">
-                <a href="logout.php" class="bg-yellow-600 text-white px-6 py-3 rounded-lg hover:bg-yellow-700 transition">
+                <a href="logout.php" class="bg-yellow-500 text-white px-4 py-2 rounded shadow hover:bg-yellow-600">
                     Sair
                 </a>
             </div>

@@ -44,23 +44,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 
 <body class="bg-gray-100">
-    <nav class="bg-yellow-500 p-4">
+<nav class="bg-yellow-500 p-4">
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-white text-2xl font-bold">Loja Biscuit</h1>
-            <button class="md:hidden text-white" id="menu-toggle">
-                <!-- Ícone do menu hamburguer -->
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
-                </svg>
-            </button>
+            <form action="index.php" method="GET" class="flex items-center space-x-2">
+                <input type="text" name="search" placeholder="Buscar produtos..." class="px-4 py-2 rounded-md">
+                <button type="submit" class="bg-white text-yellow-500 px-4 py-2 rounded-md">Buscar</button>
+            </form>
+            <!-- Menu de navegação -->
             <ul class="hidden md:flex space-x-4 text-white" id="menu">
-                <li><a href="../index.php" class="hover:text-gray-300">Produtos</a></li>
+                <li><a href="index.php" class="hover:text-gray-300">Produtos</a></li>
                 <li><a href="#about" class="hover:text-gray-300">Sobre Nós</a></li>
                 <li><a href="#contact" class="hover:text-gray-300">Contato</a></li>
                 <?php if (isset($_SESSION['nome'])): ?>
                     <li><a href="php/perfil.php" class="hover:text-gray-300">Meu Perfil</a></li>
-
                     <li><a href="php/carrinho/carrinho.php" class="hover:text-gray-300">Carrinho</a></li>
                     <?php if ($isAdmin): ?>
                         <li><a href="admin/read.php" class="hover:text-gray-300">Admin</a></li>

@@ -141,8 +141,9 @@ if (isset($_GET['pagina'])) {
                     </p>
 
                     <!-- Adicionar ao Carrinho -->
-                    <form method="POST" action="php/carrinho/add_carrinho.php" class="mt-6">
+                    <form method="POST" action="../carrinho/add_carrinho.php" class="mt-6">
                         <input type="hidden" name="produto_id" value="<?php echo htmlspecialchars($produto['id']); ?>">
+                        <input type="number" name="quantidade" value="1" min="1">
                         <button type="submit"
                             class="bg-yellow-500 text-white px-6 py-3 rounded-md hover:bg-yellow-600 transition duration-300">
                             Adicionar ao Carrinho

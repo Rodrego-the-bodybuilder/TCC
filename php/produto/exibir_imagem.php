@@ -12,14 +12,17 @@ if (isset($_GET['id'])) {
     $stmt->fetch();
     $stmt->close();
 
-    if (!empty($imagem) && file_exists("../../" . $imagem)) {
-        // Define os cabeçalhos para exibir a imagem
-        $extensao = pathinfo($imagem, PATHINFO_EXTENSION);
-        $mime = mime_content_type("../../" . $imagem);
+    // Debugging: Verificar o caminho da imagem e se o arquivo existe
+    var_dump($imagem);
+    var_dump(file_exists("../../admin/uploads/" . $imagem));
+
+    // Verifica se a imagem existe no caminho especificado
+    if (!empty($imagem) && file_exists("../../admin/uploads/" . $imagem)) {
+        $mime = mime_content_type("../../admin/uploads/" . $imagem);
         header("Content-Type: $mime");
-        readfile("../../" . $imagem);
+        readfile("../" . $imagem);
     } else {
-        // Retorna uma mensagem ou imagem padrão em caso de erro
+        // Exibe a imagem padrão em caso de erro
         header("Content-Type: image/png");
         echo file_get_contents("../assets/imagem_nao_encontrada.png");
     }
