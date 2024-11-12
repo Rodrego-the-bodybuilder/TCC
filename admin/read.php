@@ -37,7 +37,7 @@ $resultado = $conexao->query("SELECT * FROM produtos");
 </head>
 
 <body class="bg-gray-100">
-    
+
     <nav class="bg-yellow-500 p-4">
         <div class="container mx-auto flex justify-between items-center">
             <h1 class="text-white text-2xl font-bold">Loja Biscuit</h1>
@@ -65,21 +65,32 @@ $resultado = $conexao->query("SELECT * FROM produtos");
     <div class="container mx-auto p-6">
         <div class="flex justify-between items-center mb-6">
             <h2 class="text-4xl font-bold text-gray-700">Lista de Produtos</h2>
-            <a href="create.php" class="bg-yellow-400 text-white px-4 py-2 rounded hover:bg-blue-500">Adicionar Produto</a>
+            <div>
+                <a href="create.php" class="bg-yellow-400 text-white px-4 py-2 rounded hover:bg-blue-500">Adicionar
+                    Produto</a>
+                <a href="pedidos.php" class="bg-blue-500 text-white px-4 py-2 rounded ml-4 hover:bg-yellow-500">Ver
+                    Pedidos</a>
+            </div>
         </div>
 
         <div class="grid gap-6 lg:grid-cols-3 sm:grid-cols-2">
             <?php while ($produto = $resultado->fetch_assoc()): ?>
                 <div class="bg-white rounded-lg shadow-md p-6 flex flex-col justify-between h-full">
                     <div>
-                        <h3 class="text-xl font-semibold text-gray-800"><?php echo htmlspecialchars($produto['nome']); ?></h3>
+                        <h3 class="text-xl font-semibold text-gray-800"><?php echo htmlspecialchars($produto['nome']); ?>
+                        </h3>
                         <!-- Limita a descrição com CSS para 4 linhas e mostra reticências -->
-                        <p class="text-gray-600 mt-2 truncate-text"><?php echo htmlspecialchars($produto['descricao']); ?></p>
-                        <p class="text-gray-700 mt-2 font-semibold">R$ <?php echo number_format($produto['preco'], 2, ',', '.'); ?></p>
+                        <p class="text-gray-600 mt-2 truncate-text"><?php echo htmlspecialchars($produto['descricao']); ?>
+                        </p>
+                        <p class="text-gray-700 mt-2 font-semibold">R$
+                            <?php echo number_format($produto['preco'], 2, ',', '.'); ?></p>
                     </div>
                     <div class="mt-6 flex justify-between items-center border-t pt-4">
-                        <a href="update.php?id=<?php echo $produto['id']; ?>" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-yellow-500">Atualizar</a>
-                        <a href="delete.php?id=<?php echo $produto['id']; ?>" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600" onclick="return confirm('Tem certeza que deseja deletar?');">Deletar</a>
+                        <a href="update.php?id=<?php echo $produto['id']; ?>"
+                            class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-yellow-500">Atualizar</a>
+                        <a href="delete.php?id=<?php echo $produto['id']; ?>"
+                            class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                            onclick="return confirm('Tem certeza que deseja deletar?');">Deletar</a>
                     </div>
                 </div>
             <?php endwhile; ?>

@@ -60,45 +60,45 @@ if (!$conexao->query("
     echo "Erro ao criar tabela 'avaliacoes': " . $conexao->error;
 }
 
-// Criando a tabela de pedidos
 if (!$conexao->query("
     CREATE TABLE IF NOT EXISTS pedidos (
-        id INT PRIMARY KEY AUTO_INCREMENT,
+        id INT AUTO_INCREMENT PRIMARY KEY,
         usuario_id INT NOT NULL,
         data_pedido DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
         status VARCHAR(50) NOT NULL DEFAULT 'Pendente',
         total DECIMAL(10, 2) NOT NULL,
-        FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+        status_pagamento VARCHAR(50) NOT NULL DEFAULT 'Pendente',
+        FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE
     )
 ")) {
     echo "Erro ao criar tabela 'pedidos': " . $conexao->error;
 }
 
-// Criando a tabela de itens do pedido
+// Criando a tabela 'itens_pedido'
 if (!$conexao->query("
     CREATE TABLE IF NOT EXISTS itens_pedido (
-        id INT PRIMARY KEY AUTO_INCREMENT,
+        id INT AUTO_INCREMENT PRIMARY KEY,
         pedido_id INT NOT NULL,
         produto_id INT NOT NULL,
         quantidade INT NOT NULL,
         preco_unitario DECIMAL(10, 2) NOT NULL,
-        FOREIGN KEY (pedido_id) REFERENCES pedidos(id),
-        FOREIGN KEY (produto_id) REFERENCES produtos(id)
+        FOREIGN KEY (pedido_id) REFERENCES pedidos(id) ON DELETE CASCADE,
+        FOREIGN KEY (produto_id) REFERENCES produtos(id) ON DELETE CASCADE
     )
 ")) {
     echo "Erro ao criar tabela 'itens_pedido': " . $conexao->error;
 }
 
-// Criando a tabela de pagamentos
+// Criando a tabela 'pagamentos'
 if (!$conexao->query("
     CREATE TABLE IF NOT EXISTS pagamentos (
-        id INT PRIMARY KEY AUTO_INCREMENT,
+        id INT AUTO_INCREMENT PRIMARY KEY,
         pedido_id INT NOT NULL,
         valor DECIMAL(10, 2) NOT NULL,
         metodo_pagamento VARCHAR(50) NOT NULL,
         data_pagamento DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
         status_pagamento VARCHAR(50) NOT NULL,
-        FOREIGN KEY (pedido_id) REFERENCES pedidos(id)
+        FOREIGN KEY (pedido_id) REFERENCES pedidos(id) ON DELETE CASCADE
     )
 ")) {
     echo "Erro ao criar tabela 'pagamentos': " . $conexao->error;
@@ -128,10 +128,12 @@ if (!$conexao->query("
         usuario_id INT NOT NULL,
         produto_id INT NOT NULL,
         quantidade INT NOT NULL,
+        preco DECIMAL(10, 2) NOT NULL,
         FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
         FOREIGN KEY (produto_id) REFERENCES produtos(id)
     )
 ")) {
     echo "Erro ao criar tabela 'carrinho': " . $conexao->error;
 }
+
 ?>

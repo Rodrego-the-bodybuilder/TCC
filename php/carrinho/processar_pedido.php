@@ -1,6 +1,6 @@
 <?php
 session_start();
-include("../conexao.php");
+include("../../conexao.php");
 
 if (!isset($_POST['usuario_id'])) {
     echo "Erro: Usuário não autenticado.";
@@ -37,6 +37,7 @@ $stmt_pagamento->execute();
 $stmt_itens = $conexao->prepare("INSERT INTO itens_pedido (pedido_id, produto_id, quantidade, preco_unitario) SELECT ?, produto_id, quantidade, preco FROM carrinho WHERE usuario_id = ?");
 $stmt_itens->bind_param("ii", $pedido_id, $usuario_id);
 $stmt_itens->execute();
+
 
 // Limpar o carrinho
 $stmt_limpar_carrinho = $conexao->prepare("DELETE FROM carrinho WHERE usuario_id = ?");

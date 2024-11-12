@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </svg>
             </button>
             <ul class="hidden md:flex space-x-4 text-white" id="menu">
-                <li><a href="index.php" class="hover:text-gray-300">Produtos</a></li>
+                <li><a href="../index.php" class="hover:text-gray-300">Produtos</a></li>
                 <li><a href="#about" class="hover:text-gray-300">Sobre Nós</a></li>
                 <li><a href="#contact" class="hover:text-gray-300">Contato</a></li>
                 <?php if (isset($_SESSION['nome'])): ?>

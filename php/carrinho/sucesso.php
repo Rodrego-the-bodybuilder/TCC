@@ -8,6 +8,6 @@
 <body>
     <h2>Compra realizada com sucesso!</h2>
     <p>Obrigado pela sua compra. Seu pedido foi registrado e está aguardando pagamento.</p>
-    <a href="index.php">Voltar para a loja</a>
+    <a href="../../index.php">Voltar para a loja</a>
 </body>
 </html>

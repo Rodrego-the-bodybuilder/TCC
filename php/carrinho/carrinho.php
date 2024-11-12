@@ -84,7 +84,7 @@ $result = $stmt->get_result();
             <div class="mt-6 flex justify-between items-center">
                 <a href="finalizar_pedido.php"
                     class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-500">Finalizar Pedido</a>
-                <a href="carrinho.php" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500">Continuar
+                <a href="../../index.php" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500">Continuar
                     Comprando</a>
             </div>
 
