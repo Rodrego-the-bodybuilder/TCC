@@ -13,12 +13,30 @@ if (!$isAdmin) {
 
 // Consulta para obter os pedidos, incluindo o nome e o e-mail do usuário
 $resultado = $conexao->query("
-    SELECT p.id, p.usuario_id, p.total, e.rua, e.numero, e.complemento, e.cidade, e.estado, e.cep, p.status_pagamento, u.nome, u.email
+    SELECT 
+        p.id, 
+        p.usuario_id, 
+        p.total, 
+        e.rua, 
+        e.numero, 
+        e.complemento, 
+        e.cidade, 
+        e.estado, 
+        e.cep, 
+        p.status_pagamento, 
+        u.nome, 
+        u.email
     FROM pedidos p
-    JOIN enderecos_entrega e ON p.usuario_id = e.usuario_id
+    JOIN (
+        SELECT usuario_id, MIN(id) as endereco_id
+        FROM enderecos_entrega
+        GROUP BY usuario_id
+    ) AS endereco_unico ON p.usuario_id = endereco_unico.usuario_id
+    JOIN enderecos_entrega e ON endereco_unico.endereco_id = e.id
     JOIN usuarios u ON p.usuario_id = u.id
     ORDER BY p.id DESC
 ");
+
 ?>
 
 <!DOCTYPE html>
