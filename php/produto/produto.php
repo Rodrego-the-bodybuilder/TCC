@@ -51,6 +51,7 @@ if (isset($_GET['id'])) {
     header("Location: index.php?error=IDProdutoNaoFornecido");
     exit();
 }
+
 // Se a requisição for via AJAX, retornamos as avaliações em JSON
 if (isset($_GET['pagina'])) {
     $comentarios = [];
@@ -63,8 +64,6 @@ if (isset($_GET['pagina'])) {
     ]);
     exit();
 }
-
-
 ?>
 
 <!DOCTYPE html>
@@ -98,7 +97,6 @@ if (isset($_GET['pagina'])) {
                     }
                 });
         }
-
     </script>
 </head>
 
@@ -125,25 +123,31 @@ if (isset($_GET['pagina'])) {
     <section class="container mx-auto p-6">
         <?php if ($produto): ?>
             <div class="bg-white p-6 rounded-lg shadow-md flex flex-col lg:flex-row">
-                <!-- Imagem -->
                 <div class="lg:w-1/2 mb-6 lg:mb-0">
-                    <img src="exibir_imagem.php?id=<?php echo htmlspecialchars($produto['id']); ?>"
-                        alt="<?php echo htmlspecialchars($produto['nome']); ?>" class="w-full h-auto rounded-lg shadow-lg">
+                    <?php if (!empty($produto['imagem'])): ?>
+                        <img src="exibir_imagem.php?id=<?php echo htmlspecialchars($produto['id']); ?>"
+                            alt="<?php echo htmlspecialchars($produto['nome']); ?>"
+                            class="w-full max-w-md h-auto rounded-lg shadow-lg">
+                    <?php else: ?>
+                        <p>Imagem não disponível.</p>
+                    <?php endif; ?>
                 </div>
-                <!-- Informações do Produto -->
+
                 <div class="lg:w-1/2 lg:pl-6">
-                    <h2 class="text-3xl font-semibold mb-2 break-words"><?php echo htmlspecialchars($produto['nome']); ?>
+                    <h2 class="text-3xl font-semibold mb-2 break-words">
+                        <?php echo htmlspecialchars($produto['nome']); ?>
                     </h2>
-                    <p class="text-xl text-gray-700 mb-4 break-words"><?php echo htmlspecialchars($produto['descricao']); ?>
+                    <p class="text-xl text-gray-700 mb-4 break-words">
+                        <?php echo htmlspecialchars($produto['descricao']); ?>
                     </p>
                     <p class="text-lg font-semibold text-gray-800">R$
                         <?php echo number_format($produto['preco'], 2, ',', '.'); ?>
                     </p>
-
-                    <!-- Adicionar ao Carrinho -->
                     <form method="POST" action="../carrinho/add_carrinho.php" class="mt-6">
                         <input type="hidden" name="produto_id" value="<?php echo htmlspecialchars($produto['id']); ?>">
-                        <input type="number" name="quantidade" value="1" min="1">
+                        <label for="quantidade" class="block text-gray-700 mb-2">Quantidade:</label>
+                        <input type="number" name="quantidade" id="quantidade" value="1" min="1"
+                            class="w-24 p-2 border rounded-md focus:outline-none focus:ring focus:ring-yellow-500">
                         <button type="submit"
                             class="bg-yellow-500 text-white px-6 py-3 rounded-md hover:bg-yellow-600 transition duration-300">
                             Adicionar ao Carrinho
@@ -152,7 +156,6 @@ if (isset($_GET['pagina'])) {
                 </div>
             </div>
 
-            <!-- Avaliações -->
             <div class="mt-6 bg-white p-6 rounded-lg shadow-md">
                 <h3 class="text-2xl font-bold mb-4">Avaliações</h3>
                 <div id="comentarios">

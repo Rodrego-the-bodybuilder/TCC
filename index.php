@@ -67,7 +67,7 @@ if (!$result) {
                 <input type="text" name="search" placeholder="Buscar produtos..." class="px-4 py-2 rounded-md">
                 <button type="submit" class="bg-white text-yellow-500 px-4 py-2 rounded-md">
                     <i class="fas fa-search"></i> <!-- Ícone de lupa -->
-                    </button>
+                </button>
             </form>
             <!-- Menu de navegação -->
             <ul class="hidden md:flex space-x-4 text-white" id="menu">
@@ -109,7 +109,6 @@ if (!$result) {
         </div>
 
         <!-- Produtos -->
-        <!-- Produtos -->
         <div class="flex-1">
             <h2 class="text-3xl font-bold mb-4">Produtos</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -118,8 +117,9 @@ if (!$result) {
                     echo "
             <div class='bg-white p-4 rounded-lg shadow'>
                 <a href='php/produto/produto.php?id=" . htmlspecialchars($produto['id']) . "' class='block'>
-                    <img src='php/exibir_imagem.php?id=" . htmlspecialchars($produto['id']) . "' alt='" . htmlspecialchars($produto['nome']) . "' class='w-full h-64 object-cover rounded-t-lg'>
-                    <h3 class='text-xl font-semibold mt-4 line-clamp-1'>" . htmlspecialchars($produto['nome']) . " - R$ " . htmlspecialchars($produto['preco']) . "</h3>
+                    <!-- Exibição da imagem -->
+                    <img src='php/produto/exibir_imagem.php?id=" . htmlspecialchars($produto['id']) . "' alt='" . htmlspecialchars($produto['nome']) . "' class='w-full h-64 object-cover rounded-t-lg'>
+                    <h3 class='text-xl font-semibold mt-4 line-clamp-1'>" . htmlspecialchars($produto['nome']) . " - R$ " . number_format($produto['preco'], 2, ',', '.') . "</h3>
                 </a>
                 <form method='POST' action='php/carrinho/add_carrinho.php' class='mt-4'>
                     <input type='hidden' name='produto_id' value='" . htmlspecialchars($produto['id']) . "'>

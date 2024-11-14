@@ -82,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 class="block w-full p-2 border rounded mb-4" required>
             <input type="password" name="senha" placeholder="Senha" class="block w-full p-2 border rounded mb-4"
                 required>
-            <button type="submit" class="w-full bg-blue-600 text-white p-2 rounded">Registrar</button>
+            <button type="submit" class="w-full bg-yellow-500 text-white p-2 rounded">Registrar</button>
         </form>
 
         <p class="mt-4 text-center">

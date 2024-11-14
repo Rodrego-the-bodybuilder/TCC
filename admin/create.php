@@ -22,9 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         // Lida com o upload da imagem
         if (isset($_FILES['imagem']) && $_FILES['imagem']['error'] == 0) {
-            // Lê o arquivo da imagem como uma string
-            $imagem = file_get_contents($_FILES['imagem']['tmp_name']);
-            $imagem = $conexao->real_escape_string($imagem); // Escapa para evitar problemas de SQL
+            // Lê o conteúdo da imagem e converte para Base64
+            $imagem = base64_encode(file_get_contents($_FILES['imagem']['tmp_name']));
 
             // Inserir o produto com imagem no banco de dados usando prepared statements
             $stmt = $conexao->prepare("INSERT INTO produtos (nome, descricao, preco, imagem) VALUES (?, ?, ?, ?)");
